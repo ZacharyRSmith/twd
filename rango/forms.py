@@ -24,8 +24,8 @@ class PageForm(forms.ModelForm):
         #fields = ('title', 'url', 'views',)
 
     def clean(self):
-        c_data = self.cleaned_data
-        url = c_data.get('url')
+        cleaned_data = self.cleaned_data
+        url = cleaned_data.get('url')
 
         if url and not url.startswith('http://'):
             if not url.startswith('www.'):
@@ -33,5 +33,5 @@ class PageForm(forms.ModelForm):
             else:
                 url = 'http://' + url
 
-        c_data['url'] = url
-        return c_data
+        cleaned_data['url'] = url
+        return cleaned_data
