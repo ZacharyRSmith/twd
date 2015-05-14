@@ -12,11 +12,11 @@
         <h1>Rango says...</h1>
 
         {% if categories %}
-            <ul>
-                {% for cat in categories %}
-                <li>{{ cat.name }}</li>
-                {% endfor %}
-            </ul>
+        <h3>Categories:</h3>
+        <ul>
+            {% for cat in categories %}
+            <li><a href="/rango/category/{{ cat.slug }}">{{ cat.name }}</a></li>
+            {% endfor %}
         {% else %}
             <strong>There are no categories present.</strong>
         {% endif %}
