@@ -9,7 +9,11 @@
     </head>
 
     <body>
-        <h1>Rango says...</h1>
+        {% if user.is_authenticated %}
+        <h1>Rango says...hello {{ user.username }}!</h1>
+        {% else %}
+        <h1>Rango says...hello!</h1>
+        {% endif %}
 
         {% if most_visited_pages %}
         <h3>Most Visited Pages:</h3>
@@ -32,6 +36,7 @@
 
         <a href="/rango/add_category/">Add a New Category</a><br />
         <a href="/rango/about/">About</a><br />
+            <a href="/rango/login/">Login</a><br />
             <a href="/rango/register/">Register here!</a><br />
         <img src="{% static "images/rango.png" %}" alt="Picture of Rango" /> <!-- New line -->
     </body>
