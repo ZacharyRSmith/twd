@@ -8,6 +8,7 @@ from rango.models import Category, Page
 def about(request):
     return render(request, 'rango/about.html')
 
+@login_required
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -23,6 +24,7 @@ def add_category(request):
 
     return render(request, 'rango/add_category.html', { 'form': form })
 
+@login_required
 def add_page(request, category_name_slug):
     try:
         cat = Category.objects.get(slug=category_name_slug)
@@ -131,8 +133,11 @@ def user_login(request):
             else:
                 return HttpResponse("Your Rango account is disabled. Pfft!")
         else:
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            err_msg = "Invalid login details: {0}, {1}".format(username, password)
+            print err_msg
+            context_dict = { 'err_msg': err_msg }
+            return render(request, 'rango/login.html', context_dict)
+#             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'rango/login.html', { })
 

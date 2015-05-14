@@ -9,6 +9,10 @@
     <body>
         <h1>Login to Rango</h1>
 
+        {% if err_msg %}
+        <h3>{{ err_msg }}</h3><br />
+        {% endif %}
+
         <form id="login_form" method="post" action="/rango/login/">
             {% csrf_token %}
             Username: <input type="text" name="username" value="" size="50" />
