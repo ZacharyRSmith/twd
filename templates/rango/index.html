@@ -34,10 +34,17 @@
             <strong>There are no categories present.</strong>
         {% endif %}
 
-        <a href="/rango/add_category/">Add a New Category</a><br />
+        {% if user.is_authenticated %}
+
+            <a href='/rango/restricted/'>Restricted Page</a><br />
+            <a href='/rango/logout/'>Logout</a><br />
+        {% else %}
+            <a href='/rango/register/'>Register Here</a><br />
+            <a href='/rango/login/'>Login</a><br />
+        {% endif %}
+
         <a href="/rango/about/">About</a><br />
-            <a href="/rango/login/">Login</a><br />
-            <a href="/rango/register/">Register here!</a><br />
+        <a href="/rango/add_category/">Add a New Category</a><br />
         <img src="{% static "images/rango.png" %}" alt="Picture of Rango" /> <!-- New line -->
     </body>
 
