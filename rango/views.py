@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
@@ -111,6 +112,10 @@ def register(request):
                  'rango/register.html',
                  { 'user_form': user_form, 'profile_form': profile_form,
                    'registered': registered })
+
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
 
 def user_login(request):
     if request.method == 'POST':
