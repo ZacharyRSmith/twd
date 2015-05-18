@@ -6,9 +6,10 @@
 
 {% block body_block %}
     <h1>Rango says...</h1>
-    look at how cute I am!
-
-    <br />
+    <p>look at how cute I am!</p>
+    {% if visits %}
+        <p>By the way, did you know you've visited the index page {{ visits }} times?</p>
+    {% endif %}
 
     <img src="{% static "images/rango.png" %}" alt="Picture of Rango" />
 {% endblock %}

@@ -7,7 +7,8 @@ from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from rango.models import Category, Page
 
 def about(request):
-    return render(request, 'rango/about.html')
+    context_dict = { 'visits': request.session['visits'] }
+    return render(request, 'rango/about.html', context_dict)
 
 @login_required
 def add_category(request):
