@@ -1,0 +1,27 @@
+{% extends 'rango/base.html' %}
+
+{% block title %}Category Index{% endblock %}
+
+{% block body_block %}
+<div class="row placeholders">
+    <div class="col-xs-12 col-sm-6 placeholder">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="{% url 'category_index' %}">Categories</a>
+                </h4>
+            </div>
+        </div>
+    {% if categories %}
+        <ul class="list-group">
+            {% for cat in categories %}
+            <li class="list-group-item">
+                <a href="{% url 'category' cat.slug %}">{{ cat.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <strong>There are no categories present.</strong>
+    {% endif %}
+</div>
+{% endblock %}

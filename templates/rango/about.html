@@ -5,11 +5,15 @@
 {% block title %}About{% endblock %}
 
 {% block body_block %}
+<div class="page-header">
     <h1>Rango says...</h1>
+</div>
+<div>
     <p>look at how cute I am!</p>
     {% if visits %}
         <p>By the way, did you know you've visited the index page {{ visits }} times?</p>
     {% endif %}
 
     <img src="{% static "images/rango.png" %}" alt="Picture of Rango" />
+</div>
 {% endblock %}

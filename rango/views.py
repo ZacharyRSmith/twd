@@ -75,6 +75,16 @@ def category(request, category_name_slug):
 
     return render(request, 'rango/category.html', context_dict)
 
+def category_index(request):
+    try:
+        categories = Category.objects.all()
+    except:
+        Category.DoesNotExist
+        categories = None
+
+    context_dict = { 'categories': categories }
+    return render(request, 'rango/category_index.html', context_dict)
+
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     most_visited_pages = Page.objects.order_by('-views')[:5]
