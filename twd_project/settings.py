@@ -24,6 +24,8 @@ SECRET_KEY = '8rw0zh3rl9$i8e=r5h_!z^=3*w5x2feyvkz9p(3nu7rz^5#wav'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
