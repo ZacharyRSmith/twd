@@ -2,8 +2,8 @@ from rango.bing_search import run_query
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from rango.models import Category, Page
 
@@ -60,11 +60,12 @@ def add_page(request, category_name_slug):
     return render(request, 'rango/add_page.html', context_dict )
 
 def category(request, category_name_slug):
-    context_dict = { }
+    context_dict = { 'query': None, 'result_list': None }
 
     if request.method == "POST":
         query = request.POST['query'].strip()
         if query:
+            context_dict['query'] = query
             context_dict['result_list'] = run_query(query)
 
     try:
@@ -72,12 +73,15 @@ def category(request, category_name_slug):
         context_dict['category_name'] = cat.name
         context_dict['category_name_slug'] = category_name_slug
 
-        pages = Page.objects.filter(category=cat)
+        pages = Page.objects.filter(category=cat).order_by('-views')
 
         context_dict['pages'] = pages
         context_dict['category'] = cat
     except Category.DoesNotExist:
         context_dict['category_name'] = category_name_slug
+
+    if not context_dict['query']:
+        context_dict['query'] = cat.name
 
     return render(request, 'rango/category.html', context_dict)
 
@@ -155,6 +159,9 @@ def index(request):
 #                  { 'user_form': user_form, 'profile_form': profile_form,
 #                    'registered': registered })
 
+def register_profile():
+    pass
+
 @login_required
 def restricted(request):
     return render(request, 'rango/restricted.html', { })
@@ -174,20 +181,20 @@ def restricted(request):
 
 def track_url(request):
     if request.method != "GET" or 'page_id' not in request.GET:
-        return HttpResponseRedirect('/rango/')
+        return redirect('/rango/')
 
-    # This assumes that page_id is an int
-    page_id = request.GET.get('page_id')
     try:
+        # This assumes that page_id is an int
+        page_id = request.GET.get('page_id')
         page = Page.objects.get(id=page_id)
         page.views += 1
         page.save()
 
         # FIXME What if page.url cannot be followed?
-        return HttpResponseRedirect(page.url)
+        return redirect(page.url)
     except Page.DoesNotExist:
         # FIXME Message user
-        return HttpResponseRedirect('/rango/')
+        return redirect('/rango/')
 
 # def user_login(request):
 #     if request.method == 'POST':
@@ -199,7 +206,7 @@ def track_url(request):
 #         if user:
 #             if user.is_active:
 #                 login(request, user)
-#                 return HttpResponseRedirect('/rango/')
+#                 return redirect('/rango/')
 #             else:
 #                 return HttpResponse("Your Rango account is disabled. Pfft!")
 #         else:
@@ -215,4 +222,4 @@ def track_url(request):
 # def user_logout(request):
 #     logout(request)
 
-#     return HttpResponseRedirect('/rango/')
+#     return redirect('/rango/')
