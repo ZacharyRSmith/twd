@@ -167,6 +167,23 @@ def search(request):
 
     return render(request, 'rango/search.html', context_dict)
 
+def track_url(request):
+    if request.method != "GET" or 'page_id' not in request.GET:
+        return HttpResponseRedirect('/rango/')
+
+    # This assumes that page_id is an int
+    page_id = request.GET.get('page_id')
+    try:
+        page = Page.objects.get(id=page_id)
+        page.views += 1
+        page.save()
+
+        # FIXME What if page.url cannot be followed?
+        return HttpResponseRedirect(page.url)
+    except Page.DoesNotExist:
+        # FIXME Message user
+        return HttpResponseRedirect('/rango/')
+
 # def user_login(request):
 #     if request.method == 'POST':
 #         username = request.POST.get('username')
