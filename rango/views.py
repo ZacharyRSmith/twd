@@ -125,6 +125,27 @@ def index(request):
 
     return render(request, 'rango/index.html', context_dict)
 
+@login_required
+def like_category(request):
+#      context_dict = { 'query': None, 'result_list': None }
+
+    if request.method != "GET" or 'category_id' not in request.GET:
+        # FIXME Msg user
+        return redirect('/rango/')
+
+    try:
+        cat = Category.objects.get(id=int(request.GET['category_id']))
+        cat.likes += 1
+        cat.save()
+
+        return HttpResponse(cat.likes)
+    except Category.DoesNotExist:
+        # FIXME Msg user
+        return redirect('/rango/')
+
+    # FIXME Code should never reach this return
+    return redirect('/rango/')
+
 # def register(request):
 #     registered = False
 
