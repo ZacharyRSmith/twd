@@ -13,7 +13,7 @@
         <br />
 
         <form class="form-inline" id="user_form" method="POST"
-              action"{% url 'search' %}">
+              action="{% url 'search' %}">
             {% csrf_token %}
 
             <input class="form-control" type="text" size="50" name="query"
@@ -47,4 +47,5 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

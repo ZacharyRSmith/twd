@@ -62,6 +62,11 @@ def add_page(request, category_name_slug):
 def category(request, category_name_slug):
     context_dict = { }
 
+    if request.method == "POST":
+        query = request.POST['query'].strip()
+        if query:
+            context_dict['result_list'] = run_query(query)
+
     try:
         cat = Category.objects.get(slug=category_name_slug)
         context_dict['category_name'] = cat.name
@@ -154,18 +159,18 @@ def index(request):
 def restricted(request):
     return render(request, 'rango/restricted.html', { })
 
-def search(request):
-    context_dict = { }
+# def search(request):
+#     context_dict = { }
 
-    if request.method == "POST":
-        query = request.POST['query'].strip()
-        if not query:
-            # FIXME Tell user that no query was found.
-            return render(request, 'rango/search.html', { })
+#     if request.method == "POST":
+#         query = request.POST['query'].strip()
+#         if not query:
+#             # FIXME Message user that query was empty
+#             return render(request, 'rango/search.html', { })
 
-        context_dict['result_list'] = run_query(query)
+#         context_dict['result_list'] = run_query(query)
 
-    return render(request, 'rango/search.html', context_dict)
+#     return render(request, 'rango/search.html', context_dict)
 
 def track_url(request):
     if request.method != "GET" or 'page_id' not in request.GET:
