@@ -146,6 +146,19 @@ def like_category(request):
     # FIXME Code should never reach this return
     return redirect('/rango/')
 
+def get_category_list(max_results=0, starts_with=''):
+    cat_list = []
+    if not starts_with:
+        return cat_list
+
+    cat_list = Category.objects.filter(name__istartswith=starts_with)
+
+    if max_results > 0:
+        if len(cat_list) > max_results:
+            cat_list = cat_list[:max_results]
+
+    return cat_list
+
 # def register(request):
 #     registered = False
 
@@ -199,6 +212,19 @@ def restricted(request):
 #         context_dict['result_list'] = run_query(query)
 
 #     return render(request, 'rango/search.html', context_dict)
+
+def suggest_category(request):
+    if request.method != "GET":
+        # FIXME Msg user
+        return redirect('/rango/')
+
+    query = request.GET.get('query')
+    if not query:
+        # FIXME Msg user
+        return redirect('/rango/')
+
+    cat_list = get_category_list(8, query)
+    return render(request, 'rango/cats.html', { 'cats': cat_list })
 
 def track_url(request):
     if request.method != "GET" or 'page_id' not in request.GET:

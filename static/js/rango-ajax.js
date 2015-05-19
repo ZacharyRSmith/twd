@@ -6,4 +6,11 @@ $(document).ready(function(){
             $('#like').hide();
         });
     });
+
+    $('#suggestion').keyup(function(){
+        query_in = $(this).val();
+        $.get('/rango/suggest_category/', {query: query_in}, function(cat_list){
+            $('#cats').html(cat_list);
+        });
+    });
 });
