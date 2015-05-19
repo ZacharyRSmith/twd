@@ -1,3 +1,4 @@
+from rango.bing_search import run_query
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -152,6 +153,19 @@ def index(request):
 @login_required
 def restricted(request):
     return render(request, 'rango/restricted.html', { })
+
+def search(request):
+    context_dict = { }
+
+    if request.method == "POST":
+        query = request.POST['query'].strip()
+        if not query:
+            # FIXME Tell user that no query was found.
+            return render(request, 'rango/search.html', { })
+
+        context_dict['result_list'] = run_query(query)
+
+    return render(request, 'rango/search.html', context_dict)
 
 # def user_login(request):
 #     if request.method == 'POST':

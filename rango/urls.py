@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^homepage/$', views.index, name='index'),
     url(r'^index/$', views.index, name='index'),
     url(r'^restricted/$', views.restricted, name='restricted'),
+    url(r'^search/$', views.search, name='search'),
 )
