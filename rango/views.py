@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from rango.models import Category, Page
 
@@ -44,10 +45,11 @@ def add_page(request, category_name_slug):
                 print "3!"
                 page = form.save(commit=False)
                 page.category = cat
+                page.first_visit = timezone.now()
+                page.last_visit = timezone.now()
                 page.views = 0
                 page.save()
-                # TODO Redirect
-                return category(request, category_name_slug)
+                return redirect('/rango/category/' + category_name_slug)
         else:
             print "4!"
             print form.errors
@@ -234,6 +236,7 @@ def track_url(request):
         # This assumes that page_id is an int
         page_id = request.GET.get('page_id')
         page = Page.objects.get(id=page_id)
+        page.last_visit = timezone.now()
         page.views += 1
         page.save()
 
